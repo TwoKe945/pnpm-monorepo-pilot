@@ -18,12 +18,12 @@ npm install pnpm-monorepo-pilot -g
 Usage: index [options]
 
 Options:
-  -s, --scan-root                  是否扫描根目录下的package.json (default: false)
-  -sh, --skip-history              跳过历史脚本选择 (default: false)
-  -si, --skip-interactive [index]  跳过交互选择界面,直接执行
-  -r, --root [root]                扫描的目录
-  -v, --version                    版本号
-  -h, --help                       display help for command
+  -s, --scan-root                  #是否扫描根目录下的package.json (default: false)
+  -sh, --skip-history              #跳过历史脚本选择 (default: false)
+  -si, --skip-interactive [index]  #跳过交互选择界面,直接执行
+  -r, --root [root]                #扫描的目录
+  -v, --version                    #版本号
+  -h, --help                       #display help for command
 ```
 ### 当子模块不存在时
 ```bash
