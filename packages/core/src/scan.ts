@@ -1,8 +1,11 @@
+import { slash } from '@antfu/utils';
 import fg from 'fast-glob'
+import { resolve } from 'path';
 import { cwd } from 'process';
 
 export interface Module {
   name: string
+  isRoot: boolean
   description: string
   scripts: string[]
 }
@@ -12,8 +15,12 @@ export interface Module {
  * @param root
  */
 export function scanPackages(scanSelf: boolean = false,root: string = cwd()) {
+  const exclude = ['node_modules/**']
+  if (!scanSelf) {
+    exclude.push('package.json')
+  }
   const packageJsonAbsolutePaths = fg.sync(['**/package.json'], {
-    ignore:['node_modules/**'],
+    ignore:exclude,
     cwd: root,
     onlyFiles: false,
     absolute: true,
@@ -24,6 +31,7 @@ export function scanPackages(scanSelf: boolean = false,root: string = cwd()) {
     const scripts = Object.keys(packageJson.scripts || {})
     modules.push({
       name: packageJson.name,
+      isRoot: slash(resolve(root, 'package.json')) == slash(packageJsonAbsolutePath),
       description: packageJson.description || '',
       scripts
     })
