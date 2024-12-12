@@ -1,6 +1,6 @@
 {
   "name": "pnpm-monorepo-pilot-workspace",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "private": true,
   "scripts": {
