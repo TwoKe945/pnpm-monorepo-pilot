@@ -1,0 +1,66 @@
+{
+  "name": "pnpm-monorepo-pilot",
+  "version": "0.0.0",
+  "description": "pnpm monorepo 脚本执行工具命令",
+  "type": "module",
+  "bin": "./dist/index.mjs",
+  "keywords": [
+    "bin",
+    "pnpm monorepo",
+    "scripts"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "build": {
+    "failOnWarn": false
+  },
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "prepublishOnly": "pnpm build"
+  },
+  "homepage": "https://github.com/TwoKe945/pnpm-monorepo-pilot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TwoKe945/pnpm-monorepo-pilot.git"
+  },
+  "bugs": {
+    "email": "twoke945@163.com",
+    "url": "https://github.com/TwoKe945/pnpm-monorepo-pilot/issues"
+  },
+  "author": {
+    "email": "twoke945@163.com",
+    "name": "TwoKe945",
+    "url": "https://github.com/TwoKe945"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@antfu/utils": "^0.7.10",
+    "@types/debug": "^4.1.12"
+  },
+  "dependencies": {
+    "debug": "^4.4.0",
+    "fast-glob": "^3.3.2"
+  }
+}
