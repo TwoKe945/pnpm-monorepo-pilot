@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "pnpm monorepo 脚本执行工具命令",
   "type": "module",
-  "bin": "./dist/index.mjs",
+  "bin": {
+    "pnpm-pilot": "./dist/index.mjs"
+  },
   "keywords": [
     "bin",
     "pnpm monorepo",
@@ -60,7 +62,9 @@
     "@types/debug": "^4.1.12"
   },
   "dependencies": {
+    "commander": "^12.1.0",
     "debug": "^4.4.0",
-    "fast-glob": "^3.3.2"
+    "fast-glob": "^3.3.2",
+    "inquirer": "^12.2.0"
   }
 }
