@@ -1,5 +1,6 @@
 import { slash } from '@antfu/utils';
 import fg from 'fast-glob'
+import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { cwd } from 'process';
 
@@ -15,19 +16,19 @@ export interface Module {
  * @param root
  */
 export function scanPackages(scanSelf: boolean = false,root: string = cwd()) {
-  const exclude = ['node_modules/**']
+  const exclude = []
   if (!scanSelf) {
     exclude.push('package.json')
   }
-  const packageJsonAbsolutePaths = fg.sync(['**/package.json'], {
-    ignore:exclude,
+  const packageJsonAbsolutePaths = fg.sync(['**/package.json', '!**/node_modules/**'], {
+    ignore: exclude,
     cwd: root,
     onlyFiles: false,
     absolute: true,
   })
   const modules: Module[] = []
   packageJsonAbsolutePaths.forEach(packageJsonAbsolutePath => {
-    const packageJson = require(packageJsonAbsolutePath)
+    const packageJson = JSON.parse(readFileSync(packageJsonAbsolutePath, 'utf-8'))
     const scripts = Object.keys(packageJson.scripts || {})
     modules.push({
       name: packageJson.name,

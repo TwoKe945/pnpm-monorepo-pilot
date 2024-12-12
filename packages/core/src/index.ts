@@ -62,14 +62,19 @@ async function selectHistoryScript() {
     return false
   }).filter(Boolean)
   if (commands.length == 0) return false;
-  const script = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'command',
-      message: '请选择要调试的脚本',
-      choices: commands
-    }
-  ])
+  let script = null;
+  try {
+    script = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'command',
+        message: '请选择要执行的脚本',
+        choices: commands
+      }
+    ])
+  } catch (e: any) {
+    console.error(`Error: ${e.message}`);
+  }
   if (!script) return
   console.log(`开始执行 ${script.command} 脚本`)
   execSync(script.command, { stdio: 'inherit'  })
@@ -112,29 +117,40 @@ async function main() {
     console.log('没有找到除了根目录下的其他模块，可使用参数 -s 扫描根目录下的package.json， exp: pnpm-pilot -s')
     return
   }
-  const module = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'name',
-      message: '请选择要调试的模块',
-      choices: modules.map(item => ({
-        name: item.name + (item.description ? ' - ' + item.description : '') ,
-        value: item.name
-      }))
-    }
+  
+  let module =  null;
+  try {
+    module = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'name',
+        message: '请选择要调试的模块',
+        choices: modules.map(item => ({
+          name: item.name + (item.description ? ' - ' + item.description : '') ,
+          value: item.name
+        }))
+      }
   ])
-  if (!module.name) return
+  } catch (e: any) {
+    console.error(`Error: ${e.message}`);
+  }
+  if (!module || !module!.name) return
   const selectedModule = modules.find(item => item.name === module.name)
   if (!selectedModule || !selectedModule.scripts || selectedModule.scripts.length == 0) return
-  const script = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'name',
-      message: '请选择要调试的脚本',
-      choices: selectedModule.scripts
-    }
-  ])
-  if (!script.name) return
+  let script = null;
+  try {
+    script = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'name',
+        message: '请选择要调试的脚本',
+        choices: selectedModule.scripts
+      }
+    ])
+  } catch (e: any) {
+    console.error(`Error: ${e.message}`);
+  }
+  if (!script || !script.name) return
   const command = selectedModule.isRoot ? `pnpm ${script.name}` : `pnpm -F ${selectedModule.name} ${script.name}`;
 
   console.log(`开始执行 ${command} 脚本`)
@@ -147,5 +163,13 @@ async function main() {
   }
   saveHistoryScript(command, config)
 }
+
+// 监听 SIGINT 信号
+process.on('SIGINT', (e) => {
+  console.log('\nExiting gracefully...', e);
+  // 这里可以执行一些清理操作
+  process.exit(0);
+});
+
 
 main();
