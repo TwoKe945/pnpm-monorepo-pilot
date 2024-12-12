@@ -1,6 +1,6 @@
 {
   "name": "pnpm-monorepo-pilot",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "pnpm monorepo 脚本执行工具命令",
   "type": "module",
   "bin": {
