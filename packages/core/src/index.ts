@@ -108,6 +108,10 @@ async function main() {
   }
 
   const modules = scanPackages(options.scanRoot, options.root)
+  if (modules.length == 0) {
+    console.log('没有找到除了根目录下的其他模块，可使用参数 -s 扫描根目录下的package.json， exp: pnpm-pilot -s')
+    return
+  }
   const module = await inquirer.prompt([
     {
       type: 'list',
